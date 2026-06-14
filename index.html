@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rumble Clone - Видеохостинг</title>
+    <!-- Подключаем Tailwind CSS для стилей -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Иконки FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-900 text-white font-sans">
+
+    <!-- НАВИГАЦИЯ (ШАПКА) -->
+    <header class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <button class="text-xl p-2 hover:bg-gray-700 rounded-full"><i class="fas fa-bars"></i></button>
+            <!-- Фирменный зеленый цвет Rumble -->
+            <div class="text-2xl font-black text-green-500 tracking-wider flex items-center space-x-1">
+                <i class="fas fa-play-circle"></i> <span>RUMBLE</span><span class="text-xs text-gray-400 font-normal ml-1">CLONE</span>
+            </div>
+        </div>
+        
+        <!-- Поиск -->
+        <div class="flex-1 max-w-xl mx-4 hidden md:block">
+            <div class="relative">
+                <input type="text" placeholder="Поиск видео, каналов..." class="w-full bg-gray-700 text-white pl-4 pr-10 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 border border-gray-600">
+                <button class="absolute right-3 top-2.5 text-gray-400 hover:text-white"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-4">
+            <button class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center space-x-2 transition">
+                <i class="fas fa-upload"></i> <span class="hidden sm:inline">Загрузить</span>
+            </button>
+            <button class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-full text-sm font-bold transition">Войти</button>
+        </div>
+    </header>
+
+    <div class="flex">
+        <!-- БОКОВОЕ МЕНЮ -->
+        <aside class="w-64 bg-gray-850 h-[calc(100vh-65px)] sticky top-[65px] hidden lg:block p-4 border-r border-gray-800">
+            <nav class="space-y-1">
+                <a href="#" class="flex items-center space-x-3 p-3 bg-gray-750 text-green-400 rounded-xl font-medium"><i class="fas fa-home w-5"></i> <span>Главная</span></a>
+                <a href="#" class="flex items-center space-x-3 p-3 hover:bg-gray-800 rounded-xl text-gray-300 transition"><i class="fas fa-fire w-5"></i> <span>В тренде</span></a>
+                <a href="#" class="flex items-center space-x-3 p-3 hover:bg-gray-800 rounded-xl text-gray-300 transition"><i class="fas fa-broadcast-tower w-5"></i> <span>Прямой эфир</span></a>
+                <hr class="border-gray-800 my-4">
+                <div class="text-xs font-bold text-gray-500 px-3 mb-2 uppercase">Мои каналы</div>
+                <p class="text-sm text-gray-400 px-3">Войдите, чтобы увидеть подписки</p>
+            </nav>
+        </aside>
+
+        <!-- ОСНОВНОЙ КОНТЕНТ -->
+        <main class="flex-1 p-4 md:p-6 lg:p-8">
+            <h1 class="text-xl font-bold mb-6 flex items-center space-x-2">
+                <i class="fas fa-bolt text-yellow-500"></i> <span>Рекомендуемые видео</span>
+            </h1>
+            
+            <!-- Сетка с видео (заполняется через JS) -->
+            <div id="video-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Сюда JavaScript вставит карточки -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Модальное окно плеера -->
+    <div id="video-modal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-gray-900 rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl relative">
+            <button onclick="closePlayer()" class="absolute top-4 right-4 text-white bg-gray-800 hover:bg-gray-700 w-10 h-10 rounded-full z-10 flex items-center justify-center"><i class="fas fa-times"></i></button>
+            <div class="aspect-video w-full bg-black">
+                <video id="main-player" controls class="w-full h-full"></video>
+            </div>
+            <div class="p-6">
+                <h2 id="modal-video-title" class="text-xl font-bold mb-2">Название видео</h2>
+                <div class="flex items-center justify-between text-sm text-gray-400">
+                    <span id="modal-video-views">0 просмотров</span>
+                    <span class="text-green-500 font-bold"><i class="fas fa-dollar-sign"></i> Монетизация активна</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
