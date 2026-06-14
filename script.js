@@ -1,7 +1,7 @@
-// НАСТРОЙКА ВАШЕГО РЕПОЗИТОРИЯ (Заполните своими данными)
-const GITHUB_USERNAME = "ВАШ_ЛОГИН_НА_GITHUB"; // Например: ivan-petrov
-const REPO_NAME = "rumble-clone";             // Название вашего репозитория
-const VIDEO_FOLDER = "my-videos";              // Название папки с видео внутри репозитория
+// НАСТРОЙКА ВАШЕГО РЕПОЗИТОРИЯ (Данные заполнены автоматически по твоим скриншотам)
+const GITHUB_USERNAME = "MRSUPRASTIN"; // Регистр букв исправлен на заглавные
+const REPO_NAME = "ruble";             // Название твоего репозитория без буквы "m"
+const VIDEO_FOLDER = "my-videos";      // Название папки с видео внутри репозитория
 
 // Ссылка на API GitHub для чтения файлов из папки
 const githubApiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${VIDEO_FOLDER}`;
@@ -23,9 +23,9 @@ async function loadVideosFromGithub() {
         
         // Фильтруем только видеофайлы (mp4, webm, mov)
         const videoFiles = files.filter(file => 
-            file.name.endsWith('.mp4') || 
-            file.name.endsWith('.webm') || 
-            file.name.endsWith('.mov')
+            file.name.toLowerCase().endsWith('.mp4') || 
+            file.name.toLowerCase().endsWith('.webm') || 
+            file.name.toLowerCase().endsWith('.mov')
         );
 
         if (videoFiles.length === 0) {
@@ -48,10 +48,9 @@ async function loadVideosFromGithub() {
             card.className = "bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl cursor-pointer transform hover:-translate-y-1 transition duration-200 group";
             card.innerHTML = `
                 <div class="relative aspect-video bg-gray-950 flex items-center justify-center">
-                    <!-- Заглушка вместо превью, так как у нас нет картинок -->
                     <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 group-hover:opacity-85 transition flex flex-col items-center justify-center text-center p-4">
                         <i class="fas fa-video text-3xl text-green-500 mb-2"></i>
-                        <span class="text-xs font-semibold text-gray-400 max-w-full truncate">${file.name}</span>
+                        <span class="text-xs font-semibold text-gray-400 max-w-full truncate px-2">${file.name}</span>
                     </div>
                 </div>
                 <div class="p-4">
