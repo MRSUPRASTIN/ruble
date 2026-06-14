@@ -25,24 +25,23 @@ function displayVideos() {
     videoGrid.innerHTML = "";
     
     myVideoFiles.forEach((fileName) => {
-        // Прямая ссылка на видеофайл
         const rawVideoUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/main/${VIDEO_FOLDER}/${encodeURIComponent(fileName)}`;
-        
-        // Красивое название
         const videoTitle = fileName.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
 
         const card = document.createElement('div');
         card.className = "bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl cursor-pointer transform hover:-translate-y-1 transition duration-200 group";
         
-        // Вместо картинки вставляем тег <video>, который подгружает только первый кадр (#t=1.0)
+        // Включаем автовоспроизведение по кругу без звука (autoplay loop muted), чтобы заставить браузер отобразить видео в обход блокировок CORS
         card.innerHTML = `
             <div class="relative aspect-video bg-gray-950 flex items-center justify-center overflow-hidden">
                 <video 
-                    src="${rawVideoUrl}#t=1.0" 
-                    preload="metadata" 
+                    src="${rawVideoUrl}" 
+                    autoplay 
+                    loop 
                     muted 
-                    playsinline 
-                    class="w-full h-full object-cover absolute inset-0 z-10 group-hover:scale-105 transition duration-300">
+                    playsinline
+                    loading="lazy"
+                    class="w-full h-full object-cover absolute inset-0 z-10 opacity-100 transition duration-300">
                 </video>
                 
                 <div class="absolute inset-0 bg-gray-900 flex items-center justify-center">
