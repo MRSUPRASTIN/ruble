@@ -3,8 +3,7 @@ const GITHUB_USERNAME = "MRSUPRASTIN";
 const REPO_NAME = "ruble";             
 const VIDEO_FOLDER = "my-videos";      
 
-// СПИСОК ТВОИХ ВИДЕО (Имена файлов должны СТРОГО совпадать с тем, что лежит в папке на GitHub)
-// Я уже перенес сюда все твои 4 файла со скриншота!
+// СПИСОК ТВОИХ ВИДЕО
 const myVideoFiles = [
     "274b4d60-1251-4404-942a-610559c81ffa.mp4",
     "41553a42-ad12-41f2-be6d-9fd642a02f07.mp4",
@@ -26,29 +25,37 @@ function displayVideos() {
     videoGrid.innerHTML = "";
     
     myVideoFiles.forEach((fileName) => {
-        // Формируем прямую ссылку на файл на серверах GitHub
+        // Прямая ссылка на видеофайл
         const rawVideoUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/main/${VIDEO_FOLDER}/${encodeURIComponent(fileName)}`;
         
-        // Делаем красивое название (убираем .mp4 и превращаем дефисы в пробелы)
+        // Красивое название
         const videoTitle = fileName.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
 
-        // Генерируем карточку
         const card = document.createElement('div');
         card.className = "bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl cursor-pointer transform hover:-translate-y-1 transition duration-200 group";
+        
+        // Вместо картинки вставляем тег <video>, который подгружает только первый кадр (#t=1.0)
         card.innerHTML = `
-            <div class="relative aspect-video bg-gray-950 flex items-center justify-center">
-                <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 group-hover:opacity-85 transition flex flex-col items-center justify-center text-center p-4">
-                    <i class="fas fa-video text-3xl text-green-500 mb-2"></i>
-                    <span class="text-xs font-semibold text-gray-400 max-w-full truncate px-2">${fileName}</span>
+            <div class="relative aspect-video bg-gray-950 flex items-center justify-center overflow-hidden">
+                <video 
+                    src="${rawVideoUrl}#t=1.0" 
+                    preload="metadata" 
+                    muted 
+                    playsinline 
+                    class="w-full h-full object-cover absolute inset-0 z-10 group-hover:scale-105 transition duration-300">
+                </video>
+                
+                <div class="absolute inset-0 bg-gray-900 flex items-center justify-center">
+                    <i class="fas fa-spinner fa-spin text-gray-600 text-2xl"></i>
                 </div>
             </div>
-            <div class="p-4">
+            <div class="p-4 relative z-20 bg-gray-800">
                 <h3 class="font-semibold text-sm line-clamp-2 group-hover:text-green-400 transition mb-1">${videoTitle}</h3>
                 <p class="text-xs text-gray-400 font-medium mb-1">Мой Канал</p>
                 <div class="flex items-center text-[11px] text-gray-500 space-x-2">
                     <span>Смотреть</span>
                     <span>•</span>
-                    <span>GitHub HQ</span>
+                    <span>GitHub Storage</span>
                 </div>
             </div>
         `;
@@ -61,7 +68,7 @@ function displayVideos() {
 // Функции плеера
 function openPlayer(title, url) {
     document.getElementById('modal-video-title').innerText = title;
-    document.getElementById('modal-video-views').innerText = "Воспроизведение из репозитория GitHub";
+    document.getElementById('modal-video-views').innerText = "Воспроизведение напрямую из GitHub";
     
     player.src = url;
     modal.classList.remove('hidden');
@@ -78,5 +85,5 @@ modal.addEventListener('click', (e) => {
     if (e.target === modal) closePlayer();
 });
 
-// Запуск отрисовки видео
+// Запуск кода
 displayVideos();
