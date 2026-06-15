@@ -3,100 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rumble  - Видеохостинг</title>
+    <title>YouTubeX - Видеохостинг</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-900 text-white font-sans">
+<body class="bg-[#0f0f0f] text-white font-sans">
 
-    <header class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50 px-4 py-3 flex items-center justify-between">
+    <header class="bg-[#0f0f0f] sticky top-0 z-50 px-4 py-3 flex items-center justify-between match-youtube">
         <div class="flex items-center space-x-4">
-            <button class="text-xl p-2 hover:bg-gray-700 rounded-full"><i class="fas fa-bars"></i></button>
-            <div class="text-2xl font-black text-green-500 tracking-wider flex items-center space-x-1">
-                <i class="fas fa-play-circle"></i> <span>RUMBLE</span><span class="text-xs text-gray-400 font-normal ml-1">online</span>
+            <button class="text-xl p-2 hover:bg-gray-800 rounded-full"><i class="fas fa-bars"></i></button>
+            <div class="text-xl font-bold tracking-tighter flex items-center space-x-1 font-sans cursor-pointer">
+                <i class="fab fa-youtube text-[#FF0000] text-2xl"></i>
+                <span class="font-black tracking-tight text-white">YouTube<span class="text-[#FF0000]">X</span></span>
             </div>
         </div>
         
         <div class="flex-1 max-w-xl mx-4 hidden md:block">
-            <div class="relative">
-                <input type="text" placeholder="Поиск видео, каналов..." class="w-full bg-gray-700 text-white pl-4 pr-10 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 border border-gray-600">
-                <button class="absolute right-3 top-2.5 text-gray-400 hover:text-white"><i class="fas fa-search"></i></button>
+            <div class="flex">
+                <div class="relative w-full">
+                    <input type="text" placeholder="Введите запрос" class="w-full bg-[#121212] text-white pl-4 pr-4 py-2 rounded-l-full focus:outline-none focus:border-[#1c62b9] border border-gray-700">
+                </div>
+                <button class="bg-[#222222] border border-l-0 border-gray-700 px-6 rounded-r-full hover:bg-gray-700 text-gray-300">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
         </div>
 
-        <div class="flex items-center space-x-4">
-            <button class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center space-x-2 transition">
-                <i class="fas fa-upload"></i> <span class="hidden sm:inline">Загрузить</span>
+        <div class="flex items-center space-x-3">
+            <button class="hover:bg-gray-800 text-white p-2.5 rounded-full text-sm font-medium transition" title="Создать">
+                <i class="fas fa-video text-lg"></i>
             </button>
-            <button class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-full text-sm font-bold transition">Войти</button>
+            <button class="hover:bg-gray-800 text-white p-2.5 rounded-full text-sm font-medium transition relative" title="Уведомления">
+                <i class="fas fa-bell text-lg"></i>
+            </button>
+            <button class="bg-transparent border border-gray-700 text-[#3ea6ff] hover:bg-[#263850] hover:border-transparent px-3 py-1.5 rounded-full text-sm font-medium flex items-center space-x-2 transition">
+                <i class="far fa-user-circle text-lg"></i> <span>Войти</span>
+            </button>
         </div>
     </header>
 
     <div class="flex">
-        <aside class="w-64 bg-gray-850 h-[calc(100vh-65px)] sticky top-[65px] hidden lg:block p-4 border-r border-r-gray-800">
+        <aside class="w-60 bg-[#0f0f0f] h-[calc(100vh-56px)] sticky top-[56px] hidden lg:block p-2">
             <nav class="space-y-1">
-                <a href="#" class="flex items-center space-x-3 p-3 bg-gray-750 text-green-400 rounded-xl font-medium"><i class="fas fa-home w-5"></i> <span>Главная</span></a>
-                <a href="#" class="flex items-center space-x-3 p-3 hover:bg-gray-800 rounded-xl text-gray-300 transition"><i class="fas fa-fire w-5"></i> <span>В тренде</span></a>
-                <a href="#" class="flex items-center space-x-3 p-3 hover:bg-gray-800 rounded-xl text-gray-300 transition"><i class="fas fa-broadcast-tower w-5"></i> <span>Прямой эфир</span></a>
+                <a href="#" class="flex items-center space-x-5 p-3 bg-gray-800 text-white rounded-xl text-sm font-medium"><i class="fas fa-home text-lg w-5 text-center"></i> <span>Главная</span></a>
+                <a href="#" class="flex items-center space-x-5 p-3 hover:bg-gray-800 rounded-xl text-gray-300 text-sm transition"><i class="fab fa-youtube text-lg w-5 text-center"></i> <span>Shorts</span></a>
+                <a href="#" class="flex items-center space-x-5 p-3 hover:bg-gray-800 rounded-xl text-gray-300 text-sm transition"><i class="fas fa-layer-group text-lg w-5 text-center"></i> <span>Подписки</span></a>
                 
                 <div class="pt-4 px-2">
-                    <a href="https://donatepay.ru/don/1506010" target="_blank" class="flex items-center justify-center space-x-2 p-3 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-black font-bold rounded-xl shadow-lg transition duration-200">
-                        <i class="fas fa-star-and-crecent fa-bounce"></i>
-                        <span>Поддержать рублём</span>
+                    <a href="https://donatepay.ru/don/1506010" target="_blank" class="flex items-center justify-center space-x-2 p-2.5 bg-[#FF0000] hover:bg-[#cc0000] text-white font-bold rounded-xl shadow-md transition duration-200 text-sm">
+                        <i class="fas fa-heart fa-beat-fade"></i>
+                        <span>Поддержать автора</span>
                     </a>
                 </div>
 
                 <hr class="border-gray-800 my-4">
-                <div class="text-xs font-bold text-gray-500 px-3 mb-2 uppercase">Мои каналы</div>
-                <p class="text-sm text-gray-400 px-3">Войдите, чтобы увидеть подписки</p>
+                <div class="text-sm font-medium text-gray-200 px-3 mb-2">Подписки</div>
+                <p class="text-xs text-gray-400 px-3 leading-relaxed">Войдите, чтобы подписаться на каналы, оставлять комментарии и лайки.</p>
             </nav>
         </aside>
 
-        <main class="flex-1 p-4 md:p-6 lg:p-8">
-            <h1 class="text-xl font-bold mb-6 flex items-center space-x-2">
-                <i class="fas fa-bolt text-yellow-500"></i> <span>Рекомендуемые видео</span>
-            </h1>
-            
-            <div id="video-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <main class="flex-1 p-4 md:p-6 bg-[#0f0f0f]">
+            <div class="flex space-x-3 overflow-x-auto pb-4 mb-4 text-sm scrollbar-none">
+                <span class="bg-white text-black px-3 py-1 rounded-lg font-medium cursor-pointer whitespace-nowrap">Все</span>
+                <span class="bg-gray-800 text-white px-3 py-1 rounded-lg font-medium hover:bg-gray-700 cursor-pointer whitespace-nowrap">Игры</span>
+                <span class="bg-gray-800 text-white px-3 py-1 rounded-lg font-medium hover:bg-gray-700 cursor-pointer whitespace-nowrap">Миксы</span>
+                <span class="bg-gray-800 text-white px-3 py-1 rounded-lg font-medium hover:bg-gray-700 cursor-pointer whitespace-nowrap">Музыка</span>
+                <span class="bg-gray-800 text-white px-3 py-1 rounded-lg font-medium hover:bg-gray-700 cursor-pointer whitespace-nowrap">Экшен</span>
+            </div>
+
+            <div id="video-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10">
                 </div>
         </main>
     </div>
 
-    <div id="qr-widget" class="fixed bottom-6 left-6 z-40 bg-gray-850/95 backdrop-blur border border-gray-700 p-4 rounded-2xl shadow-2xl transition-all duration-300 max-w-[180px] hidden sm:block">
+    <div id="qr-widget" class="fixed bottom-6 left-6 z-40 bg-[#212121] border border-gray-800 p-4 rounded-2xl shadow-2xl transition-all duration-300 max-w-[180px] hidden sm:block">
         <button onclick="document.getElementById('qr-widget').style.display='none'" class="absolute -top-2 -right-2 bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md transition">
             <i class="fas fa-times"></i>
         </button>
         <div class="text-center">
-            <p class="text-[11px] font-bold text-green-400 uppercase tracking-wider mb-2">Забирай с собой</p>
-            <div class="bg-gray-900 p-1.5 rounded-xl border border-green-500/30 overflow-hidden aspect-square">
+            <p class="text-[11px] font-bold text-[#FF0000] uppercase tracking-wider mb-2">YouTubeX Mobile</p>
+            <div class="bg-white p-1.5 rounded-xl overflow-hidden aspect-square">
                 <img src="premi11um-qr.png" alt="QR Code" class="w-full h-full object-cover rounded-lg">
             </div>
-            <p class="text-[10px] text-gray-400 mt-2 leading-tight">Сканируй камерой для перехода</p>
+            <p class="text-[10px] text-gray-400 mt-2 leading-tight">Сканируй для мобильной версии</p>
         </div>
     </div>
 
-    <div id="video-modal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-gray-900 rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl relative border border-gray-800">
-            <button onclick="closePlayer()" class="absolute top-4 right-4 text-white bg-gray-800 hover:bg-gray-700 w-10 h-10 rounded-full z-10 flex items-center justify-center"><i class="fas fa-times"></i></button>
+    <div id="video-modal" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-0 sm:p-4">
+        <div class="bg-[#0f0f0f] sm:rounded-2xl max-w-5xl w-full overflow-hidden shadow-2xl relative border border-none sm:border border-gray-800">
+            <button onclick="closePlayer()" class="absolute top-4 right-4 text-white bg-black/60 hover:bg-gray-800 w-10 h-10 rounded-full z-10 flex items-center justify-center transition"><i class="fas fa-times"></i></button>
             <div class="aspect-video w-full bg-black">
                 <video id="main-player" controls class="w-full h-full"></video>
             </div>
             
-            <div class="p-6">
-                <h2 id="modal-video-title" class="text-xl font-bold mb-2">Название видео</h2>
+            <div class="p-4 sm:p-6">
+                <h2 id="modal-video-title" class="text-xl font-bold mb-2">Название видеоролика</h2>
                 
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-2 pt-2 border-t border-gray-800">
-                    <div class="flex flex-col text-sm text-gray-400">
-                        <span id="modal-video-views">0 просмотров</span>
-                        <span class="text-green-500 font-bold mt-1 flex items-center gap-1">
-                            <i class="fas fa-check-circle"></i> Монетизация канала активна
-                        </span>
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-2 pt-2">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-600 to-indigo-700 flex items-center justify-center font-bold text-sm shadow">YX</div>
+                        <div>
+                            <p class="font-bold text-sm flex items-center gap-1">Мой Канал <i class="fas fa-check-circle text-gray-400 text-xs"></i></p>
+                            <p id="modal-video-views" class="text-xs text-gray-400">0 просмотров</p>
+                        </div>
+                        <button class="bg-white text-black hover:bg-gray-200 px-4 py-2 rounded-full text-xs font-bold transition ml-4">Подписаться</button>
                     </div>
                     
                     <div class="flex items-center">
-                        <a href="https://donatepay.ru/don/1506010" target="_blank" class="w-full sm:w-auto bg-green-500 hover:bg-green-400 text-gray-950 px-6 py-3 rounded-xl font-black text-sm flex items-center justify-center space-x-2 shadow-lg shadow-green-950/30 transition duration-200 transform hover:-translate-y-0.5">
-                            <i class="fas fa-wallet text-base"></i>
-                            <span>ДОНАТ АВТОРУ ВИДЕО</span>
+                        <a href="https://donatepay.ru/don/1506010" target="_blank" class="w-full md:w-auto bg-[#FF0000] hover:bg-[#cc0000] text-white px-6 py-2.5 rounded-full font-bold text-xs flex items-center justify-center space-x-2 shadow-lg transition duration-200">
+                            <i class="fas fa-heart text-sm"></i>
+                            <span>СПОНСИРОВАТЬ КАНАЛ</span>
                         </a>
                     </div>
                 </div>
