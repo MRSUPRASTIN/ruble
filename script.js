@@ -3,7 +3,7 @@ const GITHUB_USERNAME = "MRSUPRASTIN";
 const REPO_NAME = "ruble";             
 const VIDEO_FOLDER = "my-videos";      
 
-// ТВОЙ СПИСОК ВИДЕО
+// СПИСОК ВСЕХ ТВОИХ ВИДЕОФАЙЛОВ
 const myVideoFiles = [
     "274b4d60-1251-4404-942a-610559c81ffa.mp4",
     "41553a42-ad12-41f2-be6d-9fd642a02f07.mp4",
@@ -15,9 +15,9 @@ const videoGrid = document.getElementById('video-grid');
 const modal = document.getElementById('video-modal');
 const player = document.getElementById('main-player');
 
-// Функция для генерации случайного числа просмотров в красивом формате
+// Функция для генерации случайного количества просмотров
 function getRandomViews() {
-    const views = Math.floor(Math.random() * 95000) + 500; // Случайное число от 500 до 95500
+    const views = Math.floor(Math.random() * 95000) + 500; // От 500 до 95500
     if (views >= 1000) {
         return (views / 1000).toFixed(1) + " тыс. просмотров";
     }
@@ -34,16 +34,10 @@ function displayVideos() {
     videoGrid.innerHTML = "";
     
     myVideoFiles.forEach((fileName) => {
-        // Формируем прямую ссылку на файл
         const rawVideoUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/main/${VIDEO_FOLDER}/${encodeURIComponent(fileName)}`;
-        
-        // Красивое название видео
         const videoTitle = fileName.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
-        
-        // Генерируем рандомные просмотры индивидуально для этой карточки
         const randomViewsCount = getRandomViews();
 
-        // Генерируем карточку с фоновым видео-превью (без звука)
         const card = document.createElement('div');
         card.className = "bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl cursor-pointer transform hover:-translate-y-1 transition duration-200 group";
         card.innerHTML = `
@@ -57,8 +51,6 @@ function displayVideos() {
                     loading="lazy"
                     class="w-full h-full object-cover absolute inset-0 z-10 opacity-100 transition duration-300">
                 </video>
-                
-                <!-- Спиннер на случай долгой загрузки -->
                 <div class="absolute inset-0 bg-gray-900 flex items-center justify-center">
                     <i class="fas fa-spinner fa-spin text-gray-600 text-2xl"></i>
                 </div>
@@ -74,7 +66,6 @@ function displayVideos() {
             </div>
         `;
         
-        // Передаем сгенерированные просмотры в функцию открытия плеера
         card.onclick = () => openPlayer(videoTitle, rawVideoUrl, randomViewsCount);
         videoGrid.append(card);
     });
@@ -83,7 +74,6 @@ function displayVideos() {
 // Функции модального плеера
 function openPlayer(title, url, views) {
     document.getElementById('modal-video-title').innerText = title;
-    // Теперь в плеере отображаются те же самые просмотры, что были на карточке!
     document.getElementById('modal-video-views').innerText = views + " • Воспроизведение напрямую из репозитория";
     
     player.src = url;
@@ -101,5 +91,5 @@ modal.addEventListener('click', (e) => {
     if (e.target === modal) closePlayer();
 });
 
-// Запускаем отрисовку нашей стабильной базы видео
+// Запуск
 displayVideos();
