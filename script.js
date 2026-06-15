@@ -1,9 +1,28 @@
-// АВТОМАТИЧЕСКАЯ ГЕНЕРАЦИЯ СПИСКА СЕРИЙ (ВСЕ СЕРИИ СРАЗУ)
+// ВОЗВРАЩАЕМ ВСЕ 26 ВИДЕО С РАБОЧИМИ ССЫЛКАМИ
 const videoData = [];
-const totalEpisodes = 26; // Здесь укажи общее количество серий, если их больше или меньше
+const totalEpisodes = 26;
 
+// Набор тестовых рабочих стримов, чтобы видео точно запускались и не были пустыми
+const streamUrls = [
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
+];
+
+const samplePreviews = [
+    "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=600&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=600&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=600&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1478720143033-6a972678da30?q=80&w=600&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1542204172-e7052809a86e?q=80&w=600&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&auto=format&fit=crop"
+];
+
+// Генерируем массив обратно до 26 видеороликов
 for (let i = 1; i <= totalEpisodes; i++) {
-    // Генерируем реалистичную статистику для каждой серии, как на настоящем YouTube
     let views = "1.2 млн просмотров";
     let date = `${Math.min(i, 7)} дн. назад`;
     let duration = "48:15";
@@ -16,21 +35,16 @@ for (let i = 1; i <= totalEpisodes; i++) {
         views = "95 тыс. просмотров"; 
         date = "2 часа назад"; 
         duration = "46:10"; 
-    } else if (i > 15) { 
-        views = `${500 - i * 10} тыс. просмотров`; 
-        date = "1 день назад"; 
-        duration = "45:30"; 
     }
 
-    // Добавляем серию в общий список
     videoData.push({
-        id: `series-${i}`,
+        id: `video-${i}`,
         title: `Сериал Жена врага народа ${i} серия`,
         duration: duration,
         views: views,
         date: date,
-        videoUrl: `video${i}.mp4`, // Ссылка на видеофайл (video1.mp4, video2.mp4...)
-        previewUrl: `preview${i}.png` // Ссылка на превью картинку (preview1.png, preview2.png...)
+        videoUrl: streamUrls[(i - 1) % streamUrls.length], // Распределяем рабочие ссылки
+        previewUrl: samplePreviews[(i - 1) % samplePreviews.length] // Разные превью
     });
 }
 
@@ -39,7 +53,7 @@ function renderVideos() {
     const videoGrid = document.getElementById('video-grid');
     if (!videoGrid) return;
 
-    videoGrid.innerHTML = ''; // Очищаем сетку
+    videoGrid.innerHTML = ''; 
 
     videoData.forEach(video => {
         const card = document.createElement('div');
@@ -48,7 +62,7 @@ function renderVideos() {
 
         card.innerHTML = `
             <div class="relative aspect-video w-full bg-gray-900 rounded-xl overflow-hidden mb-3">
-                <img src="${video.previewUrl}" alt="${video.title}" class="w-full h-full object-cover group-hover:scale-102 transition duration-200" onerror="this.src='https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=600&auto=format&fit=crop'">
+                <img src="${video.previewUrl}" alt="${video.title}" class="w-full h-full object-cover group-hover:scale-102 transition duration-200">
                 <span class="absolute bottom-2 right-2 bg-black/80 text-white text-[12px] font-medium px-1.5 py-0.5 rounded">${video.duration}</span>
             </div>
             
@@ -81,7 +95,7 @@ function openPlayer(video) {
     if (modal && player) {
         modalTitle.textContent = video.title;
         modalViews.textContent = `${video.views} • ${video.date}`;
-        player.src = video.videoUrl;
+        player.src = video.videoUrl; 
         
         modal.classList.remove('hidden');
         player.play().catch(err => console.log("Автовоспроизведение заблокировано браузером"));
