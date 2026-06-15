@@ -72,15 +72,13 @@
         </main>
     </div>
 
-    <!-- КРАСИВОЕ ОКНО С QR-КОДОМ (В ЛЕВОМ НИЖНЕМ УГЛУ) -->
+    <!-- ОКНО С QR-КОДОМ (В ЛЕВОМ НИЖНЕМ УГЛУ) -->
     <div id="qr-widget" class="fixed bottom-6 left-6 z-40 bg-gray-850/95 backdrop-blur border border-gray-700 p-4 rounded-2xl shadow-2xl transition-all duration-300 max-w-[180px] hidden sm:block">
-        <!-- Кнопка закрытия виджета -->
         <button onclick="document.getElementById('qr-widget').style.display='none'" class="absolute -top-2 -right-2 bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md transition">
             <i class="fas fa-times"></i>
         </button>
         <div class="text-center">
             <p class="text-[11px] font-bold text-green-400 uppercase tracking-wider mb-2">Забирай с собой</p>
-            <!-- Твой QR-код -->
             <div class="bg-gray-900 p-1.5 rounded-xl border border-green-500/30 overflow-hidden aspect-square">
                 <img src="premi11um-qr.png" alt="QR Code" class="w-full h-full object-cover rounded-lg">
             </div>
@@ -98,7 +96,7 @@
             
             <!-- Панель информации под плеером -->
             <div class="p-6">
-                <h2 id="modal-video-title" class="text-xl font-bold mb-2">Название video</h2>
+                <h2 id="modal-video-title" class="text-xl font-bold mb-2">Название видео</h2>
                 
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-2 pt-2 border-t border-gray-800">
                     <div class="flex flex-col text-sm text-gray-400">
@@ -108,7 +106,7 @@
                         </span>
                     </div>
                     
-                    <!-- ЯРКАЯ КНОПКА ПОДДЕРЖКИ ПОД ПЛЕЕРОМ -->
+                    <!-- КНОПКА ПОДДЕРЖКИ ПОД ПЛЕЕРОМ -->
                     <div class="flex items-center">
                         <a href="https://donatepay.ru/don/1506010" target="_blank" class="w-full sm:w-auto bg-green-500 hover:bg-green-400 text-gray-950 px-6 py-3 rounded-xl font-black text-sm flex items-center justify-center space-x-2 shadow-lg shadow-green-950/30 transition duration-200 transform hover:-translate-y-0.5">
                             <i class="fas fa-wallet text-base"></i>
