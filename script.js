@@ -1,4 +1,4 @@
-// НАСТРОЙКА РЕПОЗИТОРИЯ ГИТХАБА
+// НАСТРОЙКА РЕПОЗИТОРИЯ
 const GITHUB_USERNAME = "MRSUPRASTIN"; 
 const REPO_NAME = "ruble";             
 const VIDEO_FOLDER = "my-videos";      
@@ -16,36 +16,45 @@ function getRandomViews() {
     return views + " просмотров";
 }
 
-// Автоматическое динамическое получение ВСЕХ видеороликов через API GitHub
+// Абсолютно надежный автоматический поиск ВСЕХ видео через Git Trees
 async function loadAllVideos() {
-    // Показываем прелоадер, пока файлы ищутся
-    videoGrid.innerHTML = `<p class="text-gray-400 col-span-full text-center py-10"><i class="fas fa-spinner fa-spin mr-2"></i> Ищем все видеоролики в папке...</p>`;
+    videoGrid.innerHTML = `<p class="text-gray-400 col-span-full text-center py-10"><i class="fas fa-spinner fa-spin mr-2"></i> Сканируем папку, ищем абсолютно все видео...</p>`;
 
     try {
-        const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${VIDEO_FOLDER}`;
-        const response = await fetch(apiUrl);
+        // Запрашиваем полное дерево файлов главной ветки, добавляя случайный параметр против кэширования браузером
+        const treeUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/git/trees/main?recursive=1&nocache=${Date.now()}`;
+        const response = await fetch(treeUrl);
         
         if (!response.ok) {
-            throw new Error("Не удалось прочитать папку через API");
+            throw new Error("Не удалось загрузить дерево файлов репозитория");
         }
 
-        const files = await response.json();
+        const data = await response.json();
         
-        // Фильтруем файлы, оставляя только видео в формате .mp4
-        const videoFiles = files.filter(file => file.name.toLowerCase().endsWith('.mp4'));
+        // Фильтруем файлы: они должны лежать в папке my-videos и заканчиваться на .mp4
+        const videoFiles = data.tree.filter(file => 
+            file.path.startsWith(VIDEO_FOLDER + '/') && 
+            file.path.toLowerCase().endsWith('.mp4')
+        );
 
         if (videoFiles.length === 0) {
-            videoGrid.innerHTML = `<p class="text-gray-400 col-span-full text-center py-10">Папка '${VIDEO_FOLDER}' пуста или не содержит файлов .mp4!</p>`;
+            videoGrid.innerHTML = `<p class="text-gray-400 col-span-full text-center py-10">В папке '${VIDEO_FOLDER}' не найдено ни одного .mp4 файла!</p>`;
             return;
         }
 
-        // Очищаем сетку перед выводом
+        // Стираем прелоадер
         videoGrid.innerHTML = "";
 
-        // Выводим КАЖДОЕ найденное видео на экран
+        // Отрисовываем абсолютно все найденные файлы
         videoFiles.forEach((file) => {
-            const rawVideoUrl = file.download_url; // Прямая рабочая ссылка на видеоролик
-            const videoTitle = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "); // Красивое имя без расширения
+            // Извлекаем чистое имя файла из полного пути
+            const fileName = file.path.split('/').pop();
+            
+            // Формируем прямую ссылку на скачивание
+            const rawVideoUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/main/${file.path}`;
+            
+            // Делаем красивое имя для карточки
+            const videoTitle = fileName.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
             const randomViewsCount = getRandomViews();
 
             const card = document.createElement('div');
@@ -84,8 +93,8 @@ async function loadAllVideos() {
         console.error(error);
         videoGrid.innerHTML = `
             <div class="col-span-full text-center py-10">
-                <p class="text-red-400 font-medium">Ошибка автоматического поиска через API.</p>
-                <p class="text-xs text-gray-500 mt-1">Возможно, превышен лимит анонимных запросов к GitHub. Попробуй обновить страницу позже.</p>
+                <p class="text-red-400 font-medium">Ошибка поиска видеороликов.</p>
+                <p class="text-xs text-gray-500 mt-1">Браузер заблокировал запрос или превышен лимит GitHub API. Попробуй зайти позже.</p>
             </div>
         `;
     }
@@ -111,5 +120,5 @@ modal.addEventListener('click', (e) => {
     if (e.target === modal) closePlayer();
 });
 
-// Запуск автоматического сканирования при загрузке сайта
+// Стартуем автоматическое сканирование всей структуры репозитория
 loadAllVideos();
