@@ -1,87 +1,121 @@
-// ТВОЙ ОРИГИНАЛЬНЫЙ МАССИВ С ТВОИМИ 26 ВИДЕО
-// (Вставь сюда свои 26 объектов, если ты их случайно стёр из файла)
-const videoData = [
-    {
-        id: "video-1",
-        title: "Старое название",
-        duration: "45:00",
-        views: "1.2 млн просмотров",
-        date: "2 дня назад",
-        videoUrl: "твое_видео1.mp4", // Тут автоматически останутся твои файлы
-        previewUrl: "твое_превью1.png"
-    },
-    // ... и так далее все твои 26 видео до самого конца ...
-];
+// НАСТРОЙКА РЕПОЗИТОРИЯ
+const GITHUB_USERNAME = "MRSUPRASTIN"; 
+const REPO_NAME = "ruble";              
+const VIDEO_FOLDER = "my-videos";       
 
-// Автоматическое переименование: этот цикл берет ТВОИ видео и меняет ТОЛЬКО названия
-videoData.forEach((video, index) => {
-    video.title = `Сериал Жена врага народа ${index + 1} серия`;
-});
+const videoGrid = document.getElementById('video-grid');
+const modal = document.getElementById('video-modal');
+const player = document.getElementById('main-player');
 
-// ФУНКЦИЯ ДЛЯ ОТРИСОВКИ КАРТОЧЕК НА СТРАНИЦЕ
-function renderVideos() {
-    const videoGrid = document.getElementById('video-grid');
-    if (!videoGrid) return;
-
-    videoGrid.innerHTML = ''; 
-
-    videoData.forEach(video => {
-        const card = document.createElement('div');
-        card.className = 'flex flex-col cursor-pointer group';
-        card.onclick = () => openPlayer(video);
-
-        card.innerHTML = `
-            <div class="relative aspect-video w-full bg-gray-900 rounded-xl overflow-hidden mb-3">
-                <img src="${video.previewUrl}" alt="${video.title}" class="w-full h-full object-cover group-hover:scale-102 transition duration-200" onerror="this.src='https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=600&auto=format&fit=crop'">
-                <span class="absolute bottom-2 right-2 bg-black/80 text-white text-[12px] font-medium px-1.5 py-0.5 rounded">${video.duration}</span>
-            </div>
-            
-            <div class="flex space-x-3 px-1">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-red-600 to-indigo-700 flex-shrink-0 flex items-center justify-center font-bold text-xs shadow-inner">
-                    YX
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h3 class="text-sm font-bold text-white line-clamp-2 leading-snug group-hover:text-gray-200">${video.title}</h3>
-                    <p class="text-xs text-gray-400 mt-1 flex items-center gap-1">YouTubeX Мега Сериалы <i class="fas fa-check-circle text-gray-500 text-[10px]"></i></p>
-                    <div class="text-xs text-gray-400 mt-0.5 flex items-center space-x-1">
-                        <span>${video.views}</span>
-                        <span class="before:content-['•'] before:mr-1">${video.date}</span>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        videoGrid.appendChild(card);
-    });
+// Функция генерации красивых случайных просмотров
+function getRandomViews() {
+    const views = Math.floor(Math.random() * 95000) + 500; 
+    if (views >= 1000) {
+        return (views / 1000).toFixed(1) + " тыс. просмотров";
+    }
+    return views + " просмотров";
 }
 
-// ФУНКЦИИ МОДАЛЬНОГО ПЛЕЕРА
-function openPlayer(video) {
-    const modal = document.getElementById('video-modal');
-    const player = document.getElementById('main-player');
-    const modalTitle = document.getElementById('modal-video-title');
-    const modalViews = document.getElementById('modal-video-views');
+// Абсолютно надежный автоматический поиск ВСЕХ видео через Git Trees
+async function loadAllVideos() {
+    videoGrid.innerHTML = `<p class="text-gray-400 col-span-full text-center py-10"><i class="fas fa-spinner fa-spin mr-2"></i> Сканируем папку, ищем абсолютно все видео...</p>`;
 
-    if (modal && player) {
-        modalTitle.textContent = video.title;
-        modalViews.textContent = `${video.views} • ${video.date}`;
-        player.src = video.videoUrl; // Сюда подставится именно твой рабочий путь к файлу
+    try {
+        // Запрашиваем полное дерево файлов главной ветки, добавляя случайный параметр против кэширования браузером
+        const treeUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/git/trees/main?recursive=1&nocache=${Date.now()}`;
+        const response = await fetch(treeUrl);
         
-        modal.classList.remove('hidden');
-        player.play().catch(err => console.log("Автовоспроизведение заблокировано"));
+        if (!response.ok) {
+            throw new Error("Не удалось загрузить дерево файлов репозитория");
+        }
+
+        const data = await response.json();
+        
+        // Фильтруем файлы: они должны лежать в папке my-videos и заканчиваться на .mp4
+        const videoFiles = data.tree.filter(file => 
+            file.path.startsWith(VIDEO_FOLDER + '/') && 
+            file.path.toLowerCase().endsWith('.mp4')
+        );
+
+        if (videoFiles.length === 0) {
+            videoGrid.innerHTML = `<p class="text-gray-400 col-span-full text-center py-10">В папке '${VIDEO_FOLDER}' не найдено ни одного .mp4 файла!</p>`;
+            return;
+        }
+
+        // Стираем прелоадер
+        videoGrid.innerHTML = "";
+
+        // Отрисовываем абсолютно все найденные файлы
+        videoFiles.forEach((file, index) => {
+            // Формируем прямую ссылку на скачивание твоего оригинального видео
+            const rawVideoUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/main/${file.path}`;
+            
+            // АВТОМАТИЧЕСКАЯ ПОДМЕНА НАЗВАНИЯ НА СЕРИАЛ ПО ПОРЯДКУ
+            const videoTitle = `Сериал Жена врага народа ${index + 1} серия`;
+            const randomViewsCount = getRandomViews();
+
+            const card = document.createElement('div');
+            card.className = "bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl cursor-pointer transform hover:-translate-y-1 transition duration-200 group";
+            card.innerHTML = `
+                <div class="relative aspect-video bg-gray-950 flex items-center justify-center overflow-hidden">
+                    <video 
+                        src="${rawVideoUrl}" 
+                        autoplay 
+                        loop 
+                        muted 
+                        playsinline
+                        loading="lazy"
+                        class="w-full h-full object-cover absolute inset-0 z-10 opacity-100 transition duration-300">
+                    </video>
+                    <div class="absolute inset-0 bg-gray-900 flex items-center justify-center">
+                        <i class="fas fa-spinner fa-spin text-gray-600 text-2xl"></i>
+                    </div>
+                </div>
+                <div class="p-4 relative z-20 bg-gray-800">
+                    <h3 class="font-semibold text-sm line-clamp-2 group-hover:text-green-400 transition mb-1">${videoTitle}</h3>
+                    <p class="text-xs text-gray-400 font-medium mb-1">Мой Канал</p>
+                    <div class="flex items-center text-[11px] text-gray-500 space-x-2">
+                        <span>${randomViewsCount}</span>
+                        <span>•</span>
+                        <span>GitHub HQ</span>
+                    </div>
+                </div>
+            `;
+            
+            card.onclick = () => openPlayer(videoTitle, rawVideoUrl, randomViewsCount);
+            videoGrid.append(card);
+        });
+
+    } catch (error) {
+        console.error(error);
+        videoGrid.innerHTML = `
+            <div class="col-span-full text-center py-10">
+                <p class="text-red-400 font-medium">Ошибка поиска видеороликов.</p>
+                <p class="text-xs text-gray-500 mt-1">Браузер заблокировал запрос или превышен лимит GitHub API. Попробуй зайти позже.</p>
+            </div>
+        `;
     }
+}
+
+// Управление плеером
+function openPlayer(title, url, views) {
+    document.getElementById('modal-video-title').innerText = title;
+    document.getElementById('modal-video-views').innerText = views + " • Воспроизведение напрямую из репозитория";
+    
+    player.src = url;
+    modal.classList.remove('hidden');
+    player.play();
 }
 
 function closePlayer() {
-    const modal = document.getElementById('video-modal');
-    const player = document.getElementById('main-player');
-
-    if (modal && player) {
-        modal.classList.add('hidden');
-        player.pause();
-        player.src = ''; 
-    }
+    modal.classList.add('hidden');
+    player.pause();
+    player.src = "";
 }
 
-// Запуск
-document.addEventListener('DOMContentLoaded', renderVideos);
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) closePlayer();
+});
+
+// Стартуем автоматическое сканирование всей структуры репозитория
+loadAllVideos();
